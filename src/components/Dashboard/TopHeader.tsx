@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -6,9 +6,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronDown, Calendar as CalendarIcon, Sun, Moon } from 'lucide-react';
 
 const TopHeader: React.FC = () => {
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === 'undefined') {
+      return 'light';
+    }
+    return localStorage.getItem('theme') || 'light';
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <header className="flex items-center justify-between h-16 px-6 border-b bg-background">
       <div className="flex items-center">
@@ -19,6 +37,11 @@ const TopHeader: React.FC = () => {
           </div>
       </div>
       <div className="flex items-center gap-4">
+        <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme">
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        </Button>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex items-center gap-2 text-muted-foreground">
