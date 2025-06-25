@@ -1,14 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import MainAppLayout from '../components/layout/MainAppLayout';
+import FunnelTable from '../components/Dashboard/FunnelTable';
+import SourcesPieChart from '../components/Dashboard/SourcesPieChart';
+import RevenueChart from '../components/Dashboard/RevenueChart';
+import ReasonsList from '../components/Dashboard/ReasonsList';
+import StatsCardGrid from '../components/Dashboard/StatsCardGrid';
 
-const Index = () => {
+/**
+ * Renders the main Dashboard Overview page.
+ * This page assembles various dashboard components into a cohesive grid layout,
+ * all wrapped within the application's main layout structure.
+ */
+const IndexPage: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <MainAppLayout>
+      <div className="grid grid-cols-1 lg:grid-cols-5 auto-rows-max gap-6">
+        {/* Top Row: Funnel and Sources charts */}
+        <div className="lg:col-span-3">
+          <FunnelTable />
+        </div>
+        <div className="lg:col-span-2">
+          <SourcesPieChart />
+        </div>
+
+        {/* Middle Row: Main revenue tracking chart */}
+        <div className="lg:col-span-5">
+          <RevenueChart />
+        </div>
+
+        {/* Bottom Row: Lost reasons and other stats */}
+        <ReasonsList className="lg:col-span-3" />
+        <StatsCardGrid className="lg:col-span-2" />
       </div>
-    </div>
+    </MainAppLayout>
   );
 };
 
-export default Index;
+export default IndexPage;
